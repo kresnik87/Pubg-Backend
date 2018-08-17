@@ -1,4 +1,4 @@
-package com.pugb.pugb.controller;
+package com.pugb.pugb.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
