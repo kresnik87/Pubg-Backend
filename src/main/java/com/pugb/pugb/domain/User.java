@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,8 +25,9 @@ public class User {
 	@Column(name = "email", unique = true)
 	private String email;
 	
-	@ManyToOne
-	@JoinColumn(name = "idplayer", nullable = true)
+	@ManyToMany
+	@JoinTable(name = "user_player", joinColumns = { @JoinColumn(name = "IDUSER") }, inverseJoinColumns = {
+			@JoinColumn(name = "IDPLAYER") })
 	private List<Player> players;
 
 	public Long getId() {
