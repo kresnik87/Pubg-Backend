@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.pugb.pugb.domain.User;
+import com.pugb.pugb.services.login.service.LoginService;
+
 @Controller
 public class LoginController {
 
@@ -31,6 +34,9 @@ public class LoginController {
     private ClientRegistrationRepository clientRegistrationRepository;
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
+    
+    @Autowired
+    private LoginService loginService;
 
     @SuppressWarnings("unchecked")
 	@GetMapping("/oauth_login")
@@ -76,7 +82,10 @@ public class LoginController {
     
     @GetMapping("/")
     public @ResponseBody String main(Model model, OAuth2AuthenticationToken authentication) {
-    	return "Welcome" + authentication.toString() + "**********" + model.toString();
+    	String email = authentication.getPrincipal().getAttributes().get("email").toString();
+//    	User user = loginService.login(email);
+    	
+    	return "Welcome: " + email;
     }
 
 }

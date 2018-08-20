@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.client.web.HttpSessionOAuth2Authoriza
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
 @Configuration
-//@PropertySource("application.properties")
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfiguration{
 	
