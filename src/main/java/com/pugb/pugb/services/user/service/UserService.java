@@ -1,9 +1,9 @@
 package com.pugb.pugb.services.user.service;
 
-import com.pugb.pugb.domain.User;
+import com.pugb.pugb.services.user.dto.UserPlayerDto;
 
 public interface UserService {
 
-	User login(String email);
+	UserPlayerDto login(String email);
 
 }

@@ -13,8 +13,8 @@ public class Player {
 	
 	@Id
 	@GeneratedValue(strategy =  GenerationType.AUTO)
-	@Column(name = "id")
-	private Long id;
+	@Column(name = "idplayer")
+	private Long idplayer;
 	
 	@Column(name = "name")
 	private String name;

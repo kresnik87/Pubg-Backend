@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import com.pugb.pugb.domain.User;
+import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
 @Controller
@@ -83,9 +84,9 @@ public class UserController {
     @GetMapping("/")
     public @ResponseBody String main(Model model, OAuth2AuthenticationToken authentication) {
     	String email = authentication.getPrincipal().getAttributes().get("email").toString();
-    	User user = userService.login(email);
+    	UserPlayerDto user = userService.login(email);
     	
-    	return "Welcome: " + user.getEmail();
+    	return "Welcome: " + user.getUserEmail();
     }
 
 }
