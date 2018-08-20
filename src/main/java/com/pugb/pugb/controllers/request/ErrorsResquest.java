@@ -2,7 +2,7 @@ package com.pugb.pugb.controllers.request;
 
 public class ErrorsResquest {
 
-	String[] title;
+	private String[] title;
 
 	public String[] getTitle() {
 		return title;

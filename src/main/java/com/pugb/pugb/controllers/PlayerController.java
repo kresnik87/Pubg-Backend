@@ -33,7 +33,7 @@ public class PlayerController {
 			headers.add("Authorization", "Basic " + base64Creds);
 
 			HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
-
+//https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87
 			Object object = rest.exchange("https://api.pubg.com/shards/pc-eu/players/67687", HttpMethod.GET, httpEntity,
 					Object.class).getBody();
 			errors = new ErrorsResquest();

@@ -1,8 +1,8 @@
 package com.pugb.pugb.domain;
 
 public class Season {
-	String id, type;
-	Boolean isCurrentSeason, isOffseason;
+	private String id, type;
+	private Boolean isCurrentSeason, isOffseason;
 
 	public String getId() {
 		return id;

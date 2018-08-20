@@ -6,12 +6,12 @@ import com.pugb.pugb.domain.enumerator.GameModeEnum;
 import com.pugb.pugb.domain.enumerator.MapNameEnum;
 
 public class Matches {
-	String id, type, createAt, titleId, patchVersion, shardId;
-	GameModeEnum gameMode;
-	MapNameEnum mapName;
-	Integer duration;
-	Boolean isCustomMatch;
-	List<String> stats, tags;
+	private String id, type, createAt, titleId, patchVersion, shardId;
+	private GameModeEnum gameMode;
+	private MapNameEnum mapName;
+	private Integer duration;
+	private Boolean isCustomMatch;
+	private List<String> stats, tags;
 
 	public String getId() {
 		return id;

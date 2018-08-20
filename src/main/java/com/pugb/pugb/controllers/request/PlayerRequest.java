@@ -1,7 +1,7 @@
 package com.pugb.pugb.controllers.request;
 
 public class PlayerRequest {
-	String id, type, name, shardld, patchVersion, titleId;
+	private String id, type, name, shardld, patchVersion, titleId;
 
 	public String getId() {
 		return id;

@@ -1,7 +1,7 @@
 package com.pugb.pugb.domain;
 
 public class Sample {
-	String id, type, createAt, ShardId, titleId;
+	private String id, type, createAt, ShardId, titleId;
 
 	public String getId() {
 		return id;
