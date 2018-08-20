@@ -1,14 +1,14 @@
-package com.pugb.pugb.services.login.service.impl;
+package com.pugb.pugb.services.user.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pugb.pugb.domain.User;
-import com.pugb.pugb.services.login.repositories.UserRepository;
-import com.pugb.pugb.services.login.service.LoginService;
+import com.pugb.pugb.services.user.repositories.UserRepository;
+import com.pugb.pugb.services.user.service.UserService;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
