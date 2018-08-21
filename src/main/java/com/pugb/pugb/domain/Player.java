@@ -13,18 +13,18 @@ public class Player {
 	
 	@Id
 	@GeneratedValue(strategy =  GenerationType.AUTO)
-	@Column(name = "id")
-	private Long id;
+	@Column(name = "idplayer")
+	private Long idplayer;
 	
 	@Column(name = "name")
 	private String name;
 
 	public Long getId() {
-		return id;
+		return idplayer;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.idplayer = id;
 	}
 
 	public String getName() {

@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.Header;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
@@ -33,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.pugb.pugb.controllers.request.UserRequest;
 import com.pugb.pugb.domain.User;
+import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
 @Controller
@@ -90,31 +93,34 @@ public class UserController {
 	}
 
 	@GetMapping("/")
-	public @ResponseBody String main(Model model, OAuth2AuthenticationToken authentication) {
-		String email = authentication.getPrincipal().getAttributes().get("email").toString();
-		User user = userService.login(email);
-
-		return "Welcome: " + user.getEmail();
-	}
+    public @ResponseBody String main(Model model, OAuth2AuthenticationToken authentication) {
+    	String email = authentication.getPrincipal().getAttributes().get("email").toString();
+    	UserPlayerDto user = userService.login(email);
+    	
+    	return "Welcome: " + user.getUserEmail();
+    }
 
 	// https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87
 
-	@RequestMapping(value = "/player/find/", method = RequestMethod.GET)
+	@RequestMapping(value = "/player/find", method = RequestMethod.GET)
 	public Boolean findPlayer(@RequestParam String server, @RequestParam String nickName) {
 		RestTemplate rest = new RestTemplate();
 		try {
 		String plainCreds = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g";
-		                     //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g
-		byte[] plainCredsBytes = plainCreds.getBytes();
-		byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-		String base64Creds = new String(base64CredsBytes);
-
+		                   //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g
+//		byte[] plainCredsBytes = plainCreds.getBytes();
+//		byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+//		String base64Creds = new String(base64CredsBytes);
+//let headers= new Header();
+		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-    	headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.add("Authorization", "Basic " + base64Creds);
+		//headers.set;append('Content-Type', 'application/json');
+//		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//    	headers.setContentType(MediaType.APPLICATION_JSON);
+//		headers.add("Authorization", "Basic " + base64Creds);
 
 		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+		
 		Object object = rest
 				.exchange("https://api.pubg.com/shards/pc-eu/players?playerNames=" + nickName, HttpMethod.GET, httpEntity, Object.class)
 				.getBody();

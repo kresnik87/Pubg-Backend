@@ -2,6 +2,8 @@ package com.pugb.pugb.controllers.request;
 
 public class PlayerRequest {
 	private String id, type, name, shardld, patchVersion, titleId;
+	private AttributesRequest attributes;
+	private RelationShipsRequest relationShips;
 
 	public String getId() {
 		return id;

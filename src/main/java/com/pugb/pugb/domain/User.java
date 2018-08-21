@@ -1,29 +1,34 @@
 package com.pugb.pugb.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
 public class User {
-	
+
 	@Id
-	@GeneratedValue(strategy =  GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-	
-	@Column(name = "email")
+
+	@Column(name = "email", unique = true)
 	private String email;
-	
-	@ManyToOne
-	@JoinColumn(name = "player_id", nullable = false)
-	private Player player;
+
+	@ManyToMany
+	@JoinTable(name = "user_player", joinColumns = { @JoinColumn(name = "IDUSER") }, inverseJoinColumns = {
+			@JoinColumn(name = "IDPLAYER") })
+	private List<Player> players;
 
 	public Long getId() {
 		return id;
@@ -41,17 +46,17 @@ public class User {
 		this.email = email;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public List<Player> getPlayer() {
+		return players;
 	}
 
-	public void setPlayer(Player player) {
-		this.player = player;
+	public void setPlayer(List<Player> player) {
+		this.players = player;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", player=" + player + "]";
+		return "User [id=" + id + ", email=" + email + ", player=" + players + "]";
 	}
 
 	@Override
@@ -60,7 +65,7 @@ public class User {
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((player == null) ? 0 : player.hashCode());
+		result = prime * result + ((players == null) ? 0 : players.hashCode());
 		return result;
 	}
 
@@ -83,12 +88,12 @@ public class User {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (player == null) {
-			if (other.player != null)
+		if (players == null) {
+			if (other.players != null)
 				return false;
-		} else if (!player.equals(other.player))
+		} else if (!players.equals(other.players))
 			return false;
 		return true;
 	}
-	
+
 }
