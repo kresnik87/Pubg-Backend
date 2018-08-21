@@ -18,10 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.pugb.pugb.domain.User;
 import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
@@ -81,12 +81,41 @@ public class UserController {
         return "loginSuccess";
     }
     
-    @GetMapping("/")
+    @GetMapping("/loginSuccess")
     public @ResponseBody String main(Model model, OAuth2AuthenticationToken authentication) {
     	String email = authentication.getPrincipal().getAttributes().get("email").toString();
     	UserPlayerDto user = userService.login(email);
     	
     	return "Welcome: " + user.getUserEmail();
+    }
+    
+    @GetMapping("/player")
+    public Boolean findPlayer(@RequestParam String server, @RequestParam String nickName) {
+    	RestTemplate rest = new RestTemplate();
+		try {
+		String plainCreds = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g";
+		
+//		byte[] plainCredsBytes = plainCreds.getBytes();
+//		byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+//		String base64Creds = new String(base64CredsBytes);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Accept", "application/vnd.api+json");
+		headers.add("Authorization", plainCreds);
+//		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//    	headers.setContentType(MediaType.APPLICATION_JSON);
+//		headers.add("Authorization", "Basic " + base64Creds);
+
+		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+		
+		Object object = rest
+				.exchange("https://api.pubg.com/shards/"+ server +"/players?playerNames=" + nickName, HttpMethod.GET, httpEntity, Object.class)
+				.getBody();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+		return true;
     }
 
 }
