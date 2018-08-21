@@ -1,7 +1,7 @@
 package com.pugb.pugb.domain;
 
 public class NPPlayer {
-	String id, type, name, shardld, patchVersion, titleId;
+	private String id, type, name, shardld, patchVersion, titleId;
 
 	public String getId() {
 		return id;

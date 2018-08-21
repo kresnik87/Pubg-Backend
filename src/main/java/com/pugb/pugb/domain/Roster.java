@@ -1,8 +1,8 @@
 package com.pugb.pugb.domain;
 
 public class Roster {
-	String id, type, ShardId, won;
-	Integer rank, teamId;
+	private String id, type, ShardId, won;
+	private Integer rank, teamId;
 
 	public String getId() {
 		return id;

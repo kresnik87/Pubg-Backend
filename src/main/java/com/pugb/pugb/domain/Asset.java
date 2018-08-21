@@ -1,7 +1,7 @@
 package com.pugb.pugb.domain;
 
 public class Asset {
-	String id, type, URL, createAt, description, name;
+	private String id, type, URL, createAt, description, name;
 
 	public String getId() {
 		return id;

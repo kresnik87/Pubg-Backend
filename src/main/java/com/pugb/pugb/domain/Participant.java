@@ -1,11 +1,11 @@
 package com.pugb.pugb.domain;
 
 public class Participant {
-	String id, type, actor, shardId, deathType, name, playerId;
-	Integer DBNOs, assists, boosts, headshotKills, heals, killsPalce, killPoints, killPointsDelta, killStreaks, kills,
+	private String id, type, actor, shardId, deathType, name, playerId;
+	private Integer DBNOs, assists, boosts, headshotKills, heals, killsPalce, killPoints, killPointsDelta, killStreaks, kills,
 			lastKillPoints, lastWinPoints, revives, roadKills, teamKills, vehiculeDestroys, weaponsAcquired, winPlace,
 			winPoints;
-	Number damageDealt, longestKill, mostDamage, rideDistance, SwimDistance, teamSurvived, walkDistance, winPointsDelta;
+	private Number damageDealt, longestKill, mostDamage, rideDistance, SwimDistance, teamSurvived, walkDistance, winPointsDelta;
 
 	public String getId() {
 		return id; 

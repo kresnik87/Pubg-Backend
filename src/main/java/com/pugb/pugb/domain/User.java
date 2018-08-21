@@ -16,15 +16,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
-	
+
 	@Id
-	@GeneratedValue(strategy =  GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "email", unique = true)
 	private String email;
-	
+
 	@ManyToMany
 	@JoinTable(name = "user_player", joinColumns = { @JoinColumn(name = "IDUSER") }, inverseJoinColumns = {
 			@JoinColumn(name = "IDPLAYER") })
@@ -95,5 +95,5 @@ public class User {
 			return false;
 		return true;
 	}
-	
+
 }

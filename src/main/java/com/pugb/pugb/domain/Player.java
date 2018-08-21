@@ -18,4 +18,22 @@ public class Player {
 	
 	@Column(name = "name")
 	private String name;
+
+	public Long getId() {
+		return idplayer;
+	}
+
+	public void setId(Long id) {
+		this.idplayer = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 }
