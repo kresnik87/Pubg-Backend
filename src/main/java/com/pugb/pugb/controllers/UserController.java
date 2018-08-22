@@ -1,6 +1,7 @@
 package com.pugb.pugb.controllers;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import com.pugb.pugb.controllers.request.PlayerRequest;
 import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
@@ -111,12 +113,17 @@ public class UserController {
 //        return "loginSuccess";
     }
 	
+	@GetMapping("/test")
+    public @ResponseBody String test() {
+    	return "entrando entrando";
+    }
+	
 	// metodo trabajado por jose para probar el header
     
 	@RequestMapping(value = "/findplayer", method = RequestMethod.GET)
-    public String player() {
+    public @ResponseBody PlayerRequest player(@RequestParam String server, @RequestParam String nickName) {
     	RestTemplate rest = new RestTemplate();
-    	Object object;
+    	PlayerRequest object = null;
 		try {
 		String plainCreds = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g";
 		
@@ -133,10 +140,10 @@ public class UserController {
 		MultiValueMap<String, String> uriVariables = new LinkedMultiValueMap<>();
 //		uriVariables.add("filter[playerNames]", nickName);
 		
-//		String url = "https://api.pubg.com/shards/"+ server +"/players?[playerNames]=" + nickName;
-		String url = "https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87";
+		String url = "https://api.pubg.com/shards/"+ server +"/players?filter[playerNames]=" + nickName;
+//		String url = "https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87";
 		
-		object = rest.exchange(url, HttpMethod.GET, httpEntity, Object.class);
+		object = rest.exchange(url, HttpMethod.GET, httpEntity, PlayerRequest.class).getBody();
 		
 //		object = rest
 //				.exchange("https://api.pubg.com/shards/"+ server +"/players?[playerNames]=" + nickName, HttpMethod.GET, httpEntity, Object.class, "filter[playerNames]:" + nickName)
@@ -145,9 +152,8 @@ public class UserController {
 		String a = "parada";
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return "No exist";
 		}
-		return object.toString();
+		return object;
     }
 
 	// https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87
