@@ -1,21 +1,13 @@
 package com.pugb.pugb.controllers;
 
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.mail.Header;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -24,23 +16,16 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-<<<<<<< HEAD
-=======
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
->>>>>>> refs/heads/domain
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-<<<<<<< HEAD
-=======
-import com.pugb.pugb.controllers.request.UserRequest;
-import com.pugb.pugb.domain.User;
->>>>>>> refs/heads/domain
 import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
@@ -95,27 +80,43 @@ public class UserController {
 			model.addAttribute("name", userAttributes.get("name"));
 		}
 
-<<<<<<< HEAD
         return "loginSuccess";
     }
     
-    @GetMapping("/loginSuccess")
-=======
-		return "loginSuccess";
-	}
-
 	@GetMapping("/")
->>>>>>> refs/heads/domain
     public @ResponseBody String main(Model model, OAuth2AuthenticationToken authentication) {
     	String email = authentication.getPrincipal().getAttributes().get("email").toString();
     	UserPlayerDto user = userService.login(email);
     	
     	return "Welcome: " + user.getUserEmail();
+//		OAuth2AuthorizedClient client = authorizedClientService
+//				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
+//
+//		String userInfoEndpointUri = client.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
+//
+//		if (!StringUtils.isEmpty(userInfoEndpointUri)) {
+//			RestTemplate restTemplate = new RestTemplate();
+//			HttpHeaders headers = new HttpHeaders();
+//			headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + client.getAccessToken().getTokenValue());
+//
+//			HttpEntity<String> entity = new HttpEntity<String>(headers);
+//
+//			ResponseEntity<Map> response = restTemplate.exchange(userInfoEndpointUri, HttpMethod.GET, entity,
+//					Map.class);
+//			Map userAttributes = response.getBody();
+//			model.addAttribute("name", userAttributes.get("name"));
+//			return "inside IF * *" + userInfoEndpointUri + " - - " + response.getHeaders().toString() + "* * * * *" + entity.getHeaders().toString();
+//		}
+//
+//        return "loginSuccess";
     }
+	
+	// metodo trabajado por jose para probar el header
     
-    @GetMapping("/player")
-    public Boolean findPlayer(@RequestParam String server, @RequestParam String nickName) {
+	@RequestMapping(value = "/findplayer", method = RequestMethod.GET)
+    public String player() {
     	RestTemplate rest = new RestTemplate();
+    	Object object;
 		try {
 		String plainCreds = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g";
 		
@@ -126,20 +127,27 @@ public class UserController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Accept", "application/vnd.api+json");
 		headers.add("Authorization", plainCreds);
-//		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//    	headers.setContentType(MediaType.APPLICATION_JSON);
-//		headers.add("Authorization", "Basic " + base64Creds);
 
 		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 		
-		Object object = rest
-				.exchange("https://api.pubg.com/shards/"+ server +"/players?playerNames=" + nickName, HttpMethod.GET, httpEntity, Object.class)
-				.getBody();
+		MultiValueMap<String, String> uriVariables = new LinkedMultiValueMap<>();
+//		uriVariables.add("filter[playerNames]", nickName);
+		
+//		String url = "https://api.pubg.com/shards/"+ server +"/players?[playerNames]=" + nickName;
+		String url = "https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87";
+		
+		object = rest.exchange(url, HttpMethod.GET, httpEntity, Object.class);
+		
+//		object = rest
+//				.exchange("https://api.pubg.com/shards/"+ server +"/players?[playerNames]=" + nickName, HttpMethod.GET, httpEntity, Object.class, "filter[playerNames]:" + nickName)
+//				.getBody();
+		
+		String a = "parada";
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return false;
+			return "No exist";
 		}
-		return true;
+		return object.toString();
     }
 
 	// https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87
@@ -156,6 +164,8 @@ public class UserController {
 //let headers= new Header();
 		
 		HttpHeaders headers = new HttpHeaders();
+		
+		
 		//headers.set;append('Content-Type', 'application/json');
 //		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 //    	headers.setContentType(MediaType.APPLICATION_JSON);

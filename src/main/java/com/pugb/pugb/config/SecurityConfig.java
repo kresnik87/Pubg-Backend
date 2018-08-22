@@ -12,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.endpoint.NimbusAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
@@ -30,7 +31,11 @@ import com.nimbusds.oauth2.sdk.auth.JWTAuthenticationClaimsSet;
 public class SecurityConfig extends WebSecurityConfiguration{
 	
 	protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+        	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        	.cors().and()
+        	.csrf().disable()
+        	.authorizeRequests()
             .antMatchers("/oauth_login", "/loginFailure", "/")
             .permitAll()
             .anyRequest()
