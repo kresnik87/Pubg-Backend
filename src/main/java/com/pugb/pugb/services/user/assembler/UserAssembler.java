@@ -9,7 +9,7 @@ public class UserAssembler {
 		UserPlayerDto dto = new UserPlayerDto();
 		
 		dto.setUserEmail(user.getEmail());
-		dto.setPlayers(user.getPlayer());
+		dto.setPlayers(user.getPlayers());
 		
 		return dto;
 	}

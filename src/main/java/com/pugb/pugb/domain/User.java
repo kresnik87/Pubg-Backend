@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,6 +28,25 @@ public class User {
 	@JoinTable(name = "user_player", joinColumns = { @JoinColumn(name = "IDUSER") }, inverseJoinColumns = {
 			@JoinColumn(name = "IDPLAYER") })
 	private List<Player> players;
+	
+	@Column(name = "premium")
+	private boolean premium;
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+
+	public boolean isPremium() {
+		return premium;
+	}
+
+	public void setPremium(boolean premium) {
+		this.premium = premium;
+	}
 
 	public Long getId() {
 		return id;
@@ -46,17 +64,9 @@ public class User {
 		this.email = email;
 	}
 
-	public List<Player> getPlayer() {
-		return players;
-	}
-
-	public void setPlayer(List<Player> player) {
-		this.players = player;
-	}
-
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", player=" + players + "]";
+		return "User [id=" + id + ", email=" + email + ", players=" + players + ", premium=" + premium + "]";
 	}
 
 	@Override
@@ -66,6 +76,7 @@ public class User {
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((players == null) ? 0 : players.hashCode());
+		result = prime * result + (premium ? 1231 : 1237);
 		return result;
 	}
 
@@ -92,6 +103,8 @@ public class User {
 			if (other.players != null)
 				return false;
 		} else if (!players.equals(other.players))
+			return false;
+		if (premium != other.premium)
 			return false;
 		return true;
 	}

@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -84,11 +85,11 @@ public class UserController {
 	}
 
 	@GetMapping("/")
-	public @ResponseBody String main(Model model, OAuth2AuthenticationToken authentication) {
+	public @ResponseBody UserPlayerDto main(OAuth2AuthenticationToken authentication) {
 		String email = authentication.getPrincipal().getAttributes().get("email").toString();
 		UserPlayerDto user = userService.login(email);
 
-		return "Welcome: " + user.getUserEmail();
+		return user;
 		// OAuth2AuthorizedClient client = authorizedClientService
 		// .loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
 		// authentication.getName());
@@ -117,19 +118,13 @@ public class UserController {
 		// return "loginSuccess";
 	}
 
-	// metodo trabajado por jose para probar el header
-
 	@RequestMapping(value = "/findplayer", method = RequestMethod.GET)
-	public PlayerRequest player() {
+	public @ResponseBody PlayerRequest player(@RequestParam String shardId, @RequestParam String nickName, OAuth2AuthenticationToken authentication) {
 		RestTemplate rest = new RestTemplate();
-		PlayerRequest root;
+		PlayerRequest pr = null;
 
 		try {
 			String plainCreds = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g";
-
-			// byte[] plainCredsBytes = plainCreds.getBytes();
-			// byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
-			// String base64Creds = new String(base64CredsBytes);
 
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("Accept", "application/vnd.api+json");
@@ -138,22 +133,22 @@ public class UserController {
 			HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
 			MultiValueMap<String, String> uriVariables = new LinkedMultiValueMap<>();
-			// uriVariables.add("filter[playerNames]", nickName);
+			uriVariables.add("filter[playerNames]", nickName);
 
-			// String url = "https://api.pubg.com/shards/"+ server
-			// +"/players?[playerNames]=" + nickName;
-			String url = "https://api.pubg.com/shards/pc-eu/players?filter[playerNames]=KresniK87";
+			String url = "https://api.pubg.com/shards/"+ shardId +"/players?filter[playerNames]=" + nickName;
 
-		//	Object obj = rest.exchange(url, HttpMethod.GET, httpEntity, Object.class).getBody();
-			root = rest.exchange(url, HttpMethod.GET, httpEntity, PlayerRequest.class).getBody();
+			pr = rest.exchange(url, HttpMethod.GET, httpEntity, PlayerRequest.class).getBody();
 			
-			//root = new ObjectPayerRoot();
-
+			String email = authentication.getPrincipal().getAttributes().get("email").toString();
+			if(!userService.addPlayer(nickName, shardId, email)) {
+				return null;
+			}
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		return root;
+		return pr;
 	}
 
 }
