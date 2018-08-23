@@ -1,6 +1,7 @@
 package com.pugb.pugb.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,6 +150,11 @@ public class UserController {
 			return null;
 		}
 		return pr;
+	}
+	
+	@GetMapping("/allusers")
+	public @ResponseBody List<UserPlayerDto> allUsers(){
+		return userService.getAllUsers();
 	}
 
 }
