@@ -1,5 +1,6 @@
 package com.pugb.pugb.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.endpoint.NimbusAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
@@ -22,13 +24,18 @@ import org.springframework.security.oauth2.client.web.AuthorizationRequestReposi
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 
+import com.nimbusds.oauth2.sdk.auth.JWTAuthenticationClaimsSet;
+
 @Configuration
-//@PropertySource("application.properties")
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfiguration{
 	
 	protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+        	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        	.cors().and()
+        	.csrf().disable()
+        	.authorizeRequests()
             .antMatchers("/oauth_login", "/loginFailure", "/")
             .permitAll()
             .anyRequest()
