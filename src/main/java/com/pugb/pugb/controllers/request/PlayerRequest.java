@@ -21,8 +21,8 @@ public class PlayerRequest {
 
 class InfoPlayer {
 	private String id, type;
-	private InfoAttributes attributes;
-	private InfoRelationShips relationships;
+	private InfoAttributesPlayer attributes;
+	private InfoRelationShipsPlayer relationships;
 
 	public String getId() {
 		return id;
@@ -40,24 +40,24 @@ class InfoPlayer {
 		this.type = type;
 	}
 
-	public InfoAttributes getAttributes() {
+	public InfoAttributesPlayer getAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(InfoAttributes attributes) {
+	public void setAttributes(InfoAttributesPlayer attributes) {
 		this.attributes = attributes;
 	}
 
-	public InfoRelationShips getRelationships() {
+	public InfoRelationShipsPlayer getRelationships() {
 		return relationships;
 	}
 
-	public void setRelationships(InfoRelationShips relationships) {
+	public void setRelationships(InfoRelationShipsPlayer relationships) {
 		this.relationships = relationships;
 	}
 }
 
-class InfoAttributes {
+class InfoAttributesPlayer {
 
 	private Date createdAt, updatedAt;
 	private String patchVersion, name, titleId, shardId;
@@ -120,32 +120,32 @@ class InfoAttributes {
 	}
 }
 
-class InfoRelationShips {
+class InfoRelationShipsPlayer {
 	
-	InfoDataMatches matches;
+	InfoDataMatchesPlayer matches;
 
-	public InfoDataMatches getMatches() {
+	public InfoDataMatchesPlayer getMatches() {
 		return matches;
 	}
 
-	public void setMatches(InfoDataMatches matches) {
+	public void setMatches(InfoDataMatchesPlayer matches) {
 		this.matches = matches;
 	}
 }
 
-class InfoDataMatches {
-	InfoMatch[] data;
+class InfoDataMatchesPlayer {
+	InfoMatchPlayer[] data;
 
-	public InfoMatch[] getData() {
+	public InfoMatchPlayer[] getData() {
 		return data;
 	}
 
-	public void setData(InfoMatch[] data) {
+	public void setData(InfoMatchPlayer[] data) {
 		this.data = data;
 	}
 }
 
-class InfoMatch {
+class InfoMatchPlayer {
 	private TypeEnum type;
 	private String id;
 

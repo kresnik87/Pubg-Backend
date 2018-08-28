@@ -17,17 +17,13 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.pugb.pugb.controllers.request.PlayerRequest;
+import com.pugb.pugb.controllers.request.SeasonRequest;
+import com.pugb.pugb.services.season.service.SeasonService;
 import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
@@ -44,6 +40,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private SeasonService seasonService;
 
 	@SuppressWarnings("unchecked")
 	@GetMapping("/oauth_login")
@@ -87,43 +86,10 @@ public class UserController {
 
 	@GetMapping("/")
 	public @ResponseBody UserPlayerDto main(OAuth2AuthenticationToken authentication) {
-		String email = authentication.getPrincipal().getAttributes().get("email").toString();
-		UserPlayerDto user = userService.login(email);
-
-		return user;
-		// OAuth2AuthorizedClient client = authorizedClientService
-		// .loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
-		// authentication.getName());
-		//
-		// String userInfoEndpointUri =
-		// client.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
-		//
-		// if (!StringUtils.isEmpty(userInfoEndpointUri)) {
-		// RestTemplate restTemplate = new RestTemplate();
-		// HttpHeaders headers = new HttpHeaders();
-		// headers.add(HttpHeaders.AUTHORIZATION, "Bearer " +
-		// client.getAccessToken().getTokenValue());
-		//
-		// HttpEntity<String> entity = new HttpEntity<String>(headers);
-		//
-		// ResponseEntity<Map> response = restTemplate.exchange(userInfoEndpointUri,
-		// HttpMethod.GET, entity,
-		// Map.class);
-		// Map userAttributes = response.getBody();
-		// model.addAttribute("name", userAttributes.get("name"));
-		// return "inside IF * " + userInfoEndpointUri + " - - " +
-		// response.getHeaders().toString() + " * * * *" +
-		// entity.getHeaders().toString();
-		// }
-		//
-		// return "loginSuccess";
-	}
-
-	@RequestMapping(value = "/findplayer", method = RequestMethod.GET)
-	public @ResponseBody PlayerRequest player(@RequestParam String shardId, @RequestParam String nickName, OAuth2AuthenticationToken authentication) {
+		
+		// url for get all seasons
 		RestTemplate rest = new RestTemplate();
-		PlayerRequest pr = null;
-
+		SeasonRequest sr = null;
 		try {
 			String plainCreds = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g";
 
@@ -133,28 +99,33 @@ public class UserController {
 
 			HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
-			MultiValueMap<String, String> uriVariables = new LinkedMultiValueMap<>();
-			uriVariables.add("filter[playerNames]", nickName);
+			String url = "https://api.pubg.com/shards/pc-eu/seasons";
 
-			String url = "https://api.pubg.com/shards/"+ shardId +"/players?filter[playerNames]=" + nickName;
-
-			pr = rest.exchange(url, HttpMethod.GET, httpEntity, PlayerRequest.class).getBody();
+			sr = rest.exchange(url, HttpMethod.GET, httpEntity, SeasonRequest.class).getBody();
 			
-			String email = authentication.getPrincipal().getAttributes().get("email").toString();
-			if(!userService.addPlayer(nickName, shardId, email)) {
-				return null;
+			int seasons = seasonService.getSeasonsCount();
+			
+			if(seasons != sr.getData().length) {
+				seasonService.UpdateSeason();
 			}
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		return pr;
+		
+		boolean season = seasonService.UpdateSeason();
+		
+		String email = authentication.getPrincipal().getAttributes().get("email").toString();
+		UserPlayerDto user = userService.login(email);
+
+		return user;
 	}
 	
 	@GetMapping("/allusers")
 	public @ResponseBody List<UserPlayerDto> allUsers(){
 		return userService.getAllUsers();
 	}
+
 
 }
