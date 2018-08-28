@@ -1,4 +1,4 @@
-package com.pugb.pugb.services.user.repositoriy;
+package com.pugb.pugb.services.user.repository;
 
 import java.util.Optional;
 

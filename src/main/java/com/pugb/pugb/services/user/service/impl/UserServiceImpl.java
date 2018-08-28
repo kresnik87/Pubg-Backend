@@ -8,7 +8,7 @@ import com.pugb.pugb.domain.User;
 import com.pugb.pugb.services.player.repository.PlayerRepository;
 import com.pugb.pugb.services.user.assembler.UserAssembler;
 import com.pugb.pugb.services.user.dto.UserPlayerDto;
-import com.pugb.pugb.services.user.repositoriy.UserRepository;
+import com.pugb.pugb.services.user.repository.UserRepository;
 import com.pugb.pugb.services.user.service.UserService;
 
 @Service
