@@ -1,71 +1,39 @@
 package com.pugb.pugb.controllers.request;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class SeasonRequest {
-	
-	String links, meta;
-	private InfoSeason[] data;
-	
-	public String getLinks() {
-		return links;
-	}
-	public void setLinks(String links) {
-		this.links = links;
-	}
-	public String getMeta() {
-		return meta;
-	}
-	public void setMeta(String meta) {
-		this.meta = meta;
-	}
-	public InfoSeason[] getData() {
+	// private String links meta;
+	private InfoSeasonRequest[] data;
+
+	public InfoSeasonRequest[] getData() {
 		return data;
 	}
-	public void setData(InfoSeason[] data) {
+
+	public void setData(InfoSeasonRequest[] data) {
 		this.data = data;
 	}
-	
-}
 
-class InfoSeason {
-	
-	private String id, type;
-
-	public String getId() {
-		return id;
+	public List<InfoSeasonRequest> getListData() {
+		List<InfoSeasonRequest> InfoSeasonRequests = new ArrayList<>();
+		for (int i = 0; i < data.length; i++) {
+			InfoSeasonRequest infoSeasonRequest = new InfoSeasonRequest();
+			infoSeasonRequest.setId(data[i].getId());
+			infoSeasonRequest.setType(data[i].getType());
+			InfoSeasonRequest.InfoAttributesSeason attributes = infoSeasonRequest.new InfoAttributesSeason();
+			attributes.setIsCurrentSeason(data[i].getIsCurrentSeason());
+			attributes.setIsOffseason(data[i].getIsOffseason());
+			infoSeasonRequest.setAttributes(attributes);
+			InfoSeasonRequests.add(infoSeasonRequest);
+		}
+		return InfoSeasonRequests;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public int getLengthData() {
+		return data.length;
 	}
 
-	public String getType() {
-		return type;
-	}
+}	
 
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-}
-
-class InfoAttributesSeason {
-	
-	boolean isCurrentSeason, isOffseason;
-
-	public boolean isCurrentSeason() {
-		return isCurrentSeason;
-	}
-
-	public void setCurrentSeason(boolean isCurrentSeason) {
-		this.isCurrentSeason = isCurrentSeason;
-	}
-
-	public boolean isOffseason() {
-		return isOffseason;
-	}
-
-	public void setOffseason(boolean isOffseason) {
-		this.isOffseason = isOffseason;
-	}
-	
-}

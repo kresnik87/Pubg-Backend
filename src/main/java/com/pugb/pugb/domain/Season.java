@@ -15,6 +15,31 @@ public class Season {
 	
 	@Column(name = "isCurrentSeason")
 	private boolean isCurrentSeason;
+	
+	@Column(name = "isOffseason")
+	private boolean isOffseason;
+	
+	
+	@Column(name = "type")
+	private String type;
+	
+	
+	
+	public boolean isOffseason() {
+		return isOffseason;
+	}
+
+	public void setOffseason(boolean isOffseason) {
+		this.isOffseason = isOffseason;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public String getId() {
 		return id;

@@ -60,6 +60,7 @@ public class PlayerController {
 	
 	@GetMapping(value = "/player/season")
 	public @ResponseBody PlayerSeasonRequest playerSeason(@RequestParam String playerId, OAuth2AuthenticationToken authentication) {
+		return null;
 		
 	}
 

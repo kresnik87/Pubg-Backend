@@ -105,8 +105,8 @@ public class UserController {
 			
 			int seasons = seasonService.getSeasonsCount();
 			
-			if(seasons != sr.getData().length) {
-				seasonService.UpdateSeason();
+			if(seasons != sr.getLengthData()) {
+				seasonService.UpdateSeason(sr);
 			}
 			
 		} catch (Exception e) {
@@ -114,7 +114,7 @@ public class UserController {
 			return null;
 		}
 		
-		boolean season = seasonService.UpdateSeason();
+	//	boolean season = seasonService.UpdateSeason(sr);
 		
 		String email = authentication.getPrincipal().getAttributes().get("email").toString();
 		UserPlayerDto user = userService.login(email);
