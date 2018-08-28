@@ -1,5 +1,6 @@
 package com.pugb.pugb.services.user.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,13 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public List<UserPlayerDto> getAllUsers(){
-		return (List<UserPlayerDto>) userRepository.findAll().iterator();
+		List<User> users = (List<User>) userRepository.findAll();
+		List<UserPlayerDto> dtos = new ArrayList<>();
+		users.forEach(e -> {
+		UserPlayerDto dto = new UserPlayerDto();
+		dto.setUserEmail(e.getEmail());
+		dtos.add(dto);});
+		return dtos;
 	}
 
 }
