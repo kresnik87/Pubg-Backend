@@ -8,6 +8,8 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,8 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.pugb.pugb.controllers.request.InfoPlayerRequest;
 import com.pugb.pugb.controllers.request.PlayerRequest;
 import com.pugb.pugb.controllers.request.PlayerSeasonRequest;
+import com.pugb.pugb.services.player.dto.SavePlayerDto;
+import com.pugb.pugb.services.player.service.PlayerService;
 import com.pugb.pugb.services.user.service.UserService;
 
 @RestController
@@ -24,6 +29,9 @@ public class PlayerController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PlayerService playerService;
 	
 	@RequestMapping(value = "/findplayer", method = RequestMethod.GET)
 	public @ResponseBody PlayerRequest player(@RequestParam String shardId, @RequestParam String nickName, OAuth2AuthenticationToken authentication) {
@@ -61,6 +69,12 @@ public class PlayerController {
 	@GetMapping(value = "/player/season")
 	public @ResponseBody PlayerSeasonRequest playerSeason(@RequestParam String playerId, OAuth2AuthenticationToken authentication) {
 		return null;
+		
+	}
+	
+	@PostMapping(value = "/player/season")// wihtout testing
+	public @ResponseBody SavePlayerDto savePlayer(@RequestBody InfoPlayerRequest infoPlayerRequest) {		
+		return playerService.savePlayer(infoPlayerRequest);
 		
 	}
 
