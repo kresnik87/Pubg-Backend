@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.pugb.pugb.controllers.request.InfoPlayerRequest;
 import com.pugb.pugb.controllers.request.PlayerRequest;
-import com.pugb.pugb.controllers.request.PlayerSeasonRequest;
+import com.pugb.pugb.services.player.dto.PlayerDto;
 import com.pugb.pugb.services.player.dto.SavePlayerDto;
 import com.pugb.pugb.services.player.service.PlayerService;
 import com.pugb.pugb.services.user.service.UserService;
@@ -65,17 +65,28 @@ public class PlayerController {
 		}
 		return pr;
 	}
-	
-	@GetMapping(value = "/player/season")
-	public @ResponseBody PlayerSeasonRequest playerSeason(@RequestParam String playerId, OAuth2AuthenticationToken authentication) {
-		return null;
+
+	@GetMapping(value = "/player/season") 
+	public @ResponseBody PlayerDto playerSeason(@RequestParam String playerId, OAuth2AuthenticationToken authentication) {
+		return playerService.getPlayer(playerId);
 		
 	}
-	
+		/*
 	@PostMapping(value = "/player/season")// wihtout testing
-	public @ResponseBody SavePlayerDto savePlayer(@RequestBody InfoPlayerRequest infoPlayerRequest) {		
+	public @ResponseBody SavePlayerDto savePlayer(@RequestBody InfoPlayerRequest infoPlayerRequest, OAuth2AuthenticationToken authentication) {		
 		return playerService.savePlayer(infoPlayerRequest);
 		
 	}
-
+*/
+	@PostMapping(value = "/player/season")// wihtout testing
+	public @ResponseBody SavePlayerDto savePlayer(@RequestParam String id,@RequestParam String type,@RequestParam String shardId, OAuth2AuthenticationToken authentication) {
+		
+		InfoPlayerRequest infoPlayerRequest = new InfoPlayerRequest();
+		infoPlayerRequest.setId(id);
+		infoPlayerRequest.setType(type);
+		infoPlayerRequest.setshardId(shardId);
+		return playerService.savePlayer(infoPlayerRequest);
+		
+	}
+	
 }

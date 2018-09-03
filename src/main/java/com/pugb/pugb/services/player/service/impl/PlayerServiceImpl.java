@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.pugb.pugb.controllers.request.InfoPlayerRequest;
 import com.pugb.pugb.controllers.request.PlayerRequest;
 import com.pugb.pugb.domain.Player;
+import com.pugb.pugb.services.player.dto.PlayerDto;
 import com.pugb.pugb.services.player.dto.SavePlayerDto;
 import com.pugb.pugb.services.player.repository.PlayerRepository;
 import com.pugb.pugb.services.player.service.PlayerService;
@@ -17,7 +18,7 @@ public class PlayerServiceImpl implements PlayerService {
 	PlayerRepository playerRepository;
 
 	@Override
-	public Boolean exitUser(Long id) {
+	public Boolean exitUser(String id) {
 		Player player = playerRepository.findById(id).get();
 		if (player != null) {
 			return true;
@@ -39,6 +40,16 @@ public class PlayerServiceImpl implements PlayerService {
 		
 		dto.setId(player.getPlayerid());
 		dto.setType(player.getName());
+		return dto;
+	}
+
+	@Override
+	public PlayerDto getPlayer(String playerId) {
+		Player player = playerRepository.findById(playerId).get();
+		PlayerDto dto = new PlayerDto();
+		dto.setName(player.getName());
+		dto.setPlayerid(player.getPlayerid());
+		dto.setShardId(player.getShardId());
 		return dto;
 	}
 

@@ -11,11 +11,20 @@ public class InfoPlayerRequest {
 	private InfoAttributesPlayer attributes;
 	private InfoRelationShipsPlayer relationships;
 
+	public void setshardId(String shardId) {
+		if (attributes == null) {
+			attributes = new InfoAttributesPlayer();
+			attributes.setShardId(shardId);
+		} else {
+			attributes.setShardId(shardId);
+		}
+	}
+
 	public String getshardId() {
-		//return "test desde atrbute";
+		// return "test desde atrbute";
 		return attributes.getShardId();
 	}
-	
+
 	public String getId() {
 		return id;
 	}
