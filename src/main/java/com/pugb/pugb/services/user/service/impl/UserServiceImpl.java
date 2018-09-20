@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pugb.pugb.controllers.request.PlayerRequest;
 import com.pugb.pugb.domain.Player;
 import com.pugb.pugb.domain.User;
 import com.pugb.pugb.services.player.repository.PlayerRepository;
@@ -36,25 +37,6 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 
 		return UserAssembler.UserPlayerDto(user);
-	}
-
-	@Override
-	public boolean addPlayer(String playerName, String shardId, String email) {
-		User user = new User();
-		user.setEmail(email);
-
-		Player player = new Player();
-		player.setName(playerName);
-		player.setShardId(shardId);
-		
-
-		if (userRepository.findByEmail(email).isPresent()) {
-			User u = userRepository.findByEmail(email).get();
-			u.getPlayers().add(player);
-			playerRepository.save(player);
-			return true;
-		}
-		return false;
 	}
 	
 	@Override
