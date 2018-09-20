@@ -1,6 +1,7 @@
 package com.pugb.pugb.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+<<<<<<< HEAD
 import com.pugb.pugb.controllers.request.SeasonRequest;
 import com.pugb.pugb.services.season.service.SeasonService;
+=======
+>>>>>>> refs/remotes/origin/Security
 import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
@@ -85,6 +89,7 @@ public class UserController {
 
 	@GetMapping("/")
 	public @ResponseBody UserPlayerDto main(OAuth2AuthenticationToken authentication) {
+<<<<<<< HEAD
 		
 		// url for get all seasons
 		RestTemplate rest = new RestTemplate();
@@ -119,6 +124,43 @@ public class UserController {
 		UserPlayerDto user = userService.login(email);
 
 		return user;
+=======
+		String email = authentication.getPrincipal().getAttributes().get("email").toString();
+		UserPlayerDto user = userService.login(email);
+
+		return user;
+		// OAuth2AuthorizedClient client = authorizedClientService
+		// .loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
+		// authentication.getName());
+		//
+		// String userInfoEndpointUri =
+		// client.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
+		//
+		// if (!StringUtils.isEmpty(userInfoEndpointUri)) {
+		// RestTemplate restTemplate = new RestTemplate();
+		// HttpHeaders headers = new HttpHeaders();
+		// headers.add(HttpHeaders.AUTHORIZATION, "Bearer " +
+		// client.getAccessToken().getTokenValue());
+		//
+		// HttpEntity<String> entity = new HttpEntity<String>(headers);
+		//
+		// ResponseEntity<Map> response = restTemplate.exchange(userInfoEndpointUri,
+		// HttpMethod.GET, entity,
+		// Map.class);
+		// Map userAttributes = response.getBody();
+		// model.addAttribute("name", userAttributes.get("name"));
+		// return "inside IF * " + userInfoEndpointUri + " - - " +
+		// response.getHeaders().toString() + " * * * *" +
+		// entity.getHeaders().toString();
+		// }
+		//
+		// return "loginSuccess";
+	}
+
+	@GetMapping("/allusers")
+	public @ResponseBody List<UserPlayerDto> allUsers(){
+		return userService.getAllUsers();
+>>>>>>> refs/remotes/origin/Security
 	}
 
 
