@@ -7,8 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,10 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.pugb.pugb.controllers.request.InfoPlayerRequest;
 import com.pugb.pugb.controllers.request.PlayerRequest;
-import com.pugb.pugb.services.player.dto.PlayerDto;
-import com.pugb.pugb.services.player.dto.SavePlayerDto;
 import com.pugb.pugb.services.player.service.PlayerService;
 import com.pugb.pugb.services.user.service.UserService;
 
@@ -32,6 +28,7 @@ public class PlayerController {
 	@Autowired
 	private PlayerService playerService;
 	
+	// find a specific player
 	@RequestMapping(value = "/findplayer", method = RequestMethod.GET)
 	public @ResponseBody PlayerRequest player(@RequestParam String shardId, @RequestParam String nickName, OAuth2AuthenticationToken authentication) {
 		RestTemplate rest = new RestTemplate();
@@ -54,9 +51,9 @@ public class PlayerController {
 			pr = rest.exchange(url, HttpMethod.GET, httpEntity, PlayerRequest.class).getBody();
 			
 			String email = authentication.getPrincipal().getAttributes().get("email").toString();
-			if(!userService.addPlayer(nickName, shardId, email)) {
-				return null;
-			}
+//			if(!userService.addPlayer(nickName, shardId, email)) {
+//				return null;
+//			}
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -64,28 +61,12 @@ public class PlayerController {
 		}
 		return pr;
 	}
-
-	@GetMapping(value = "/player/season") 
-	public @ResponseBody PlayerDto playerSeason(@RequestParam String playerId, OAuth2AuthenticationToken authentication) {
-		return playerService.getPlayer(playerId);
-		
-	}
-		/*
-	@PostMapping(value = "/player/season")// wihtout testing
-	public @ResponseBody SavePlayerDto savePlayer(@RequestBody InfoPlayerRequest infoPlayerRequest, OAuth2AuthenticationToken authentication) {		
-		return playerService.savePlayer(infoPlayerRequest);
-		
-	}
-*/
-	@PostMapping(value = "/player/season")// wihtout testing
-	public @ResponseBody SavePlayerDto savePlayer(@RequestParam String id,@RequestParam String type,@RequestParam String shardId, OAuth2AuthenticationToken authentication) {
-		
-		InfoPlayerRequest infoPlayerRequest = new InfoPlayerRequest();
-		infoPlayerRequest.setId(id);
-		infoPlayerRequest.setType(type);
-		infoPlayerRequest.setshardId(shardId);
-		return playerService.savePlayer(infoPlayerRequest);
-		
+	
+	// add player to user, if user has a player, dont add, because for now is one player per user.
+	@RequestMapping(value = "/addplayer", method = RequestMethod.POST)
+	public @ResponseBody boolean addPlayer(@RequestBody PlayerRequest player, OAuth2AuthenticationToken authentication) {
+		return playerService.addPlayer(player, (String) authentication.getPrincipal().getAttributes().get("email"));
 	}
 	
+
 }

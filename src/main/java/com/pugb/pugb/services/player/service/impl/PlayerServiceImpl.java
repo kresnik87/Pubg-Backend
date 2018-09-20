@@ -3,19 +3,22 @@ package com.pugb.pugb.services.player.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pugb.pugb.controllers.request.InfoPlayerRequest;
 import com.pugb.pugb.controllers.request.PlayerRequest;
 import com.pugb.pugb.domain.Player;
+import com.pugb.pugb.domain.User;
 import com.pugb.pugb.services.player.dto.PlayerDto;
-import com.pugb.pugb.services.player.dto.SavePlayerDto;
 import com.pugb.pugb.services.player.repository.PlayerRepository;
 import com.pugb.pugb.services.player.service.PlayerService;
+import com.pugb.pugb.services.user.repository.UserRepository;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
 
 	@Autowired
 	PlayerRepository playerRepository;
+
+	@Autowired
+	UserRepository userRepository;
 
 	@Override
 	public Boolean exitUser(String id) {
@@ -28,19 +31,23 @@ public class PlayerServiceImpl implements PlayerService {
 	}
 
 	@Override
-	public SavePlayerDto savePlayer(InfoPlayerRequest infoPlayerRequest) {
+	public boolean addPlayer(PlayerRequest playerRequest, String email) {
+		User user = new User();
+		user.setEmail(email);
+
 		Player player = new Player();
-		player.setName(infoPlayerRequest.getType());
-		player.setPlayerid(infoPlayerRequest.getId());
-		player.setShardId(infoPlayerRequest.getshardId());
-		
-		player = playerRepository.save(player);
-		
-		SavePlayerDto dto =  new SavePlayerDto();
-		
-		dto.setId(player.getPlayerid());
-		dto.setType(player.getName());
-		return dto;
+		player.setName(playerRequest.getData().get(0).getAttributes().getName());
+		player.setShardId(playerRequest.getData().get(0).getAttributes().getShardId());
+
+		if (userRepository.findByEmail(email).isPresent()) {
+			User u = userRepository.findByEmail(email).get();
+			if (!u.getPlayers().isEmpty()) {
+				u.getPlayers().add(player);
+				playerRepository.save(player);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
