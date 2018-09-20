@@ -23,9 +23,6 @@ import com.pugb.pugb.services.user.service.UserService;
 public class PlayerController {
 	
 	@Autowired
-	private UserService userService;
-	
-	@Autowired
 	private PlayerService playerService;
 	
 	// find a specific player
