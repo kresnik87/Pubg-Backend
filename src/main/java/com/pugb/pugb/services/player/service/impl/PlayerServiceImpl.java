@@ -41,7 +41,7 @@ public class PlayerServiceImpl implements PlayerService {
 
 		if (userRepository.findByEmail(email).isPresent()) {
 			User u = userRepository.findByEmail(email).get();
-			if(!u.getPlayers().isEmpty()) {
+			if(u.getPlayers().isEmpty()) {
 				u.getPlayers().add(player);
 				playerRepository.save(player);
 				return true;
