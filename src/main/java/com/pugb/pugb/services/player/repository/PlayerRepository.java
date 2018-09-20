@@ -11,7 +11,7 @@ public interface PlayerRepository extends CrudRepository<Player, String> {
 	
 	public List<Player> findByName(String name);
 	
-	public List<Player> findBy(String shardId);
+	public List<Player> findByShardId(String shardId);
 	
 
 }
