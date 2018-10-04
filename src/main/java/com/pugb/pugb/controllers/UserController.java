@@ -1,6 +1,7 @@
 package com.pugb.pugb.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,11 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.pugb.pugb.controllers.request.PlayerRequest;
 import com.pugb.pugb.services.user.dto.UserPlayerDto;
 import com.pugb.pugb.services.user.service.UserService;
 
@@ -118,37 +113,9 @@ public class UserController {
 		// return "loginSuccess";
 	}
 
-	@RequestMapping(value = "/findplayer", method = RequestMethod.GET)
-	public @ResponseBody PlayerRequest player(@RequestParam String shardId, @RequestParam String nickName, OAuth2AuthenticationToken authentication) {
-		RestTemplate rest = new RestTemplate();
-		PlayerRequest pr = null;
-
-		try {
-			String plainCreds = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJhMmU0YTgzMC04MjFiLTAxMzYtY2UxOC00NzMxZjhiNTM3OGMiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTM0MjcwMzk1LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImtleS1wdWJnc3RhdHMifQ.gIhjTVeS6TvLzFseIwA1Gm_teq0Hu2n0idv1iRfi16g";
-
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Accept", "application/vnd.api+json");
-			headers.add("Authorization", plainCreds);
-
-			HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
-
-			MultiValueMap<String, String> uriVariables = new LinkedMultiValueMap<>();
-			uriVariables.add("filter[playerNames]", nickName);
-
-			String url = "https://api.pubg.com/shards/"+ shardId +"/players?filter[playerNames]=" + nickName;
-
-			pr = rest.exchange(url, HttpMethod.GET, httpEntity, PlayerRequest.class).getBody();
-			
-			String email = authentication.getPrincipal().getAttributes().get("email").toString();
-			if(!userService.addPlayer(nickName, shardId, email)) {
-				return null;
-			}
-			
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			return null;
-		}
-		return pr;
+	@GetMapping("/allusers")
+	public @ResponseBody List<UserPlayerDto> allUsers(){
+		return userService.getAllUsers();
 	}
 
 }
