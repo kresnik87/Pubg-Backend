@@ -58,7 +58,7 @@ public class PlayerController {
 		return pr;
 	}
 	
-	// add player to user, if user has a player, dont add, because for now is one player per user.
+	// add player to user, if user has a player, don't add, because for now is one player per user.
 	@RequestMapping(value = "/addplayer", method = RequestMethod.POST)
 	public @ResponseBody boolean addPlayer(@RequestBody PlayerRequest player, OAuth2AuthenticationToken authentication) {
 		return playerService.addPlayer(player, (String) authentication.getPrincipal().getAttributes().get("email"));
