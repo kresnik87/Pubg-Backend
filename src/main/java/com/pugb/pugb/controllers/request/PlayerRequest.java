@@ -8,11 +8,27 @@ import com.pugb.pugb.domain.enumerator.TypeEnum;
 
 public class PlayerRequest {
 
-	String links, meta;
+	private String links, meta;
 	private List<InfoPlayer> data;
 
 	public List<InfoPlayer> getData() {
 		return data;
+	}
+
+	public String getLinks() {
+		return links;
+	}
+
+	public void setLinks(String links) {
+		this.links = links;
+	}
+
+	public String getMeta() {
+		return meta;
+	}
+
+	public void setMeta(String meta) {
+		this.meta = meta;
 	}
 
 	public void setData(List<InfoPlayer> data) {
