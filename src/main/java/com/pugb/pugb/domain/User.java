@@ -31,6 +31,52 @@ public class User {
 	
 	@Column(name = "premium")
 	private boolean premium;
+	
+	@Column(name = "provider")
+	private String provider;
+	
+	@Column(name = "provider_id")
+	private String provider_id;
+	
+	@Column(name = "provider_pic")
+	private String provider_pic;
+	
+	@Column(name = "token")
+	private String token;
+
+	
+	
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+
+	public String getProvider_id() {
+		return provider_id;
+	}
+
+	public void setProvider_id(String provider_id) {
+		this.provider_id = provider_id;
+	}
+
+	public String getProvider_pic() {
+		return provider_pic;
+	}
+
+	public void setProvider_pic(String provider_pic) {
+		this.provider_pic = provider_pic;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public List<Player> getPlayers() {
 		return players;
