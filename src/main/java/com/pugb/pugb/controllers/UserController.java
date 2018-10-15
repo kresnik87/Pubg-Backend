@@ -80,18 +80,21 @@ public class UserController {
 	}
 
 	@GetMapping("/")
-	public @ResponseBody UserPlayerDto main(OAuth2AuthenticationToken authentication) {
+	public @ResponseBody String main(OAuth2AuthenticationToken authentication) {
 		String email = authentication.getPrincipal().getAttributes().get("email").toString();
 		UserPlayerDto user = userService.login(email);
 
-		return user;
-		// OAuth2AuthorizedClient client = authorizedClientService
-		// .loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
-		// authentication.getName());
-		//
-		// String userInfoEndpointUri =
-		// client.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
-		//
+		
+		 OAuth2AuthorizedClient client = authorizedClientService
+				.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(),
+				 authentication.getName());
+				
+		 //HttpHeaders headers = new HttpHeaders();
+		 
+		return client.getAccessToken().getTokenValue();
+		
+		//return user;
+		
 		// if (!StringUtils.isEmpty(userInfoEndpointUri)) {
 		// RestTemplate restTemplate = new RestTemplate();
 		// HttpHeaders headers = new HttpHeaders();

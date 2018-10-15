@@ -13,12 +13,12 @@ import com.pugb.pugb.services.user.repository.UserRepository;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
-
+	
 	@Autowired
-	PlayerRepository playerRepository;
-
+	private UserRepository userRepository;
+	
 	@Autowired
-	UserRepository userRepository;
+	private PlayerRepository playerRepository;
 
 	@Override
 	public Boolean exitUser(String id) {
@@ -59,5 +59,10 @@ public class PlayerServiceImpl implements PlayerService {
 		dto.setShardId(player.getShardId());
 		return dto;
 	}
+	
+	
+	
+	
 
 }
+

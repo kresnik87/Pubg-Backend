@@ -7,4 +7,5 @@ public interface SeasonService {
 	boolean UpdateSeason(SeasonRequest sr);
 	
 	int getSeasonsCount();
+
 }
