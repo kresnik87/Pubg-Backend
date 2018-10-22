@@ -6,8 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pugb.pugb.controllers.request.PlayerRequest;
-import com.pugb.pugb.domain.Player;
 import com.pugb.pugb.domain.User;
 import com.pugb.pugb.services.player.repository.PlayerRepository;
 import com.pugb.pugb.services.user.assembler.UserAssembler;
